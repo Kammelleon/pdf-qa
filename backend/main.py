@@ -4,11 +4,14 @@ import uvicorn
 
 from consts import API_TITLE
 from settings import get_host_env, get_port_env
+from logger import get_logger
 
 CORS_ALLOW_ORIGINS = ["*"]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ["*"]
 CORS_ALLOW_HEADERS = ["*"]
+
+logger = get_logger(__name__)
 
 app = FastAPI(title=API_TITLE)
 
@@ -20,8 +23,10 @@ app.add_middleware(
     allow_headers=CORS_ALLOW_HEADERS,
 )
 
+logger.info("Initializing API router with /api prefix")
 api_router = FastAPI(title=f"{API_TITLE} API")
 app.mount("/api", api_router)
+logger.info("API router mounted at /api")
 
 @app.get("/")
 async def root():
