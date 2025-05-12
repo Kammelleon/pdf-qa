@@ -2,6 +2,10 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
+# Directories settings
+UPLOADED_FILES_DIRECTORY_NAME = "uploads"
+VECTOR_STORE_DIRECTORY_NAME = "vector_store"
+
 # API settings
 DEFAULT_HOST = "0.0.0.0"
 DEFAULT_PORT = 8000

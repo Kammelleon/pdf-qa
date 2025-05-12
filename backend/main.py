@@ -5,6 +5,13 @@ import uvicorn
 from consts import API_TITLE
 from settings import get_host_env, get_port_env
 from logger import get_logger
+from pathlib import Path
+from settings import UPLOADED_FILES_DIRECTORY_NAME, VECTOR_STORE_DIRECTORY_NAME
+
+UPLOADED_FILES_DIRECTORY = Path(UPLOADED_FILES_DIRECTORY_NAME)
+VECTOR_STORE_DIRECTORY = Path(VECTOR_STORE_DIRECTORY_NAME)
+UPLOADED_FILES_DIRECTORY.mkdir(exist_ok=True)
+VECTOR_STORE_DIRECTORY.mkdir(exist_ok=True)
 
 CORS_ALLOW_ORIGINS = ["*"]
 CORS_ALLOW_CREDENTIALS = True
