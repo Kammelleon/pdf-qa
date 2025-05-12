@@ -20,9 +20,16 @@ app.add_middleware(
     allow_headers=CORS_ALLOW_HEADERS,
 )
 
+api_router = FastAPI(title=f"{API_TITLE} API")
+app.mount("/api", api_router)
+
 @app.get("/")
 async def root():
     return {"message": API_TITLE}
+
+@api_router.get("/")
+async def api_root():
+    return {"message": f"{API_TITLE} API"}
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host=get_host_env(), port=get_port_env(), reload=True)
