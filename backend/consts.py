@@ -1,3 +1,6 @@
 API_TITLE = "PDF Question Answering API"
 ERROR_INVALID_FILE = "Only PDF files are allowed"
 ERROR_FILE_SAVE = "Error saving file. Please try again."
+ERROR_FILE_NOT_FOUND = "File not found. Please upload the PDF first."
+ERROR_PERMISSION = "Permission error. Please check file permissions."
+ERROR_PROCESSING_PDF = "Error processing PDF. Please check the file and try again."

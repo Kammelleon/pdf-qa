@@ -2,7 +2,9 @@ import uvicorn
 import shutil
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from consts import API_TITLE, ERROR_INVALID_FILE, ERROR_FILE_SAVE
+from backend.pdf_processor import process_pdf
+from consts import API_TITLE, ERROR_INVALID_FILE, ERROR_FILE_SAVE, ERROR_FILE_NOT_FOUND, ERROR_PERMISSION, \
+    ERROR_PROCESSING_PDF
 from settings import get_host_env, get_port_env
 from logger import get_logger
 from utils import calculate_file_hash
@@ -49,19 +51,37 @@ async def api_root():
 
 @api_router.post("/upload-pdf")
 async def upload_pdf(file: UploadFile = File(...)):
+    logger.info(f"Received upload request for file: {file.filename}")
+
     if not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail=ERROR_INVALID_FILE)
 
-    temp_file_path = UPLOADED_FILES_DIRECTORY / file.filename
     try:
+        temp_file_path = UPLOADED_FILES_DIRECTORY / file.filename
         with open(temp_file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
     except IOError as e:
         logger.error(f"Error saving file: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=ERROR_FILE_SAVE)
 
-    file_hash = calculate_file_hash(temp_file_path)
-    return {"file_hash": file_hash, "filename": file.filename}
+    try:
+        file_hash = calculate_file_hash(temp_file_path)
+        vector_store_path = VECTOR_STORE_DIRECTORY / file_hash
+        if not vector_store_path.exists():
+            logger.info(f"Processing new PDF file: {file.filename}")
+            process_pdf(str(temp_file_path), str(VECTOR_STORE_DIRECTORY), file_hash)
+        else:
+            logger.info(f"Using existing vector store for file: {file.filename}")
+        return {"file_hash": file_hash, "filename": file.filename}
+    except FileNotFoundError as e:
+        logger.error(f"File not found: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=404, detail=ERROR_FILE_NOT_FOUND)
+    except PermissionError as e:
+        logger.error(f"Permission error: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=403, detail=ERROR_PERMISSION)
+    except Exception as e:
+        logger.error(f"Error processing PDF: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=ERROR_PROCESSING_PDF)
 
 
 if __name__ == "__main__":
