@@ -74,27 +74,18 @@ export const isValidFileSize = (fileSize) => {
  * @returns {Promise<{isValid: boolean, error: string|null}>} Promise resolving to validation result
  */
 export const validatePdfFile = async (file) => {
-  // Check if file exists
   if (!file) {
     return { isValid: false, error: null };
   }
-
-  // Check file type
   if (!isValidPdfType(file.type)) {
     return { isValid: false, error: 'Please select a valid PDF file' };
   }
-
-  // Check file size
   if (!isValidFileSize(file.size)) {
     return { isValid: false, error: ERROR_FILE_TOO_LARGE };
   }
-
-  // Check filename
   if (!isValidFilename(file.name)) {
     return { isValid: false, error: ERROR_INVALID_FILENAME };
   }
-
-  // Check PDF header
   try {
     const isPdf = await checkPdfHeader(file);
     if (!isPdf) {
@@ -104,7 +95,5 @@ export const validatePdfFile = async (file) => {
     console.error('Error validating PDF:', error);
     return { isValid: false, error: ERROR_INVALID_PDF };
   }
-
-  // All validations passed
   return { isValid: true, error: null };
 };

@@ -22,7 +22,6 @@ CHAIN_TYPE = "refine"
 DEFAULT_HOST = "0.0.0.0"
 DEFAULT_PORT = 8000
 
-# Load environment variables from .env file
 env_path = Path(__file__).parent / ".env"
 load_dotenv(dotenv_path=env_path)
 

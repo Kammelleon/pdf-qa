@@ -14,8 +14,6 @@ const ErrorDisplay = ({ error }) => {
       });
     }
   }, [error]);
-
-  // Component doesn't render anything, it just triggers the toast
   return null;
 };
 
