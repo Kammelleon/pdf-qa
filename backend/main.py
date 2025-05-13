@@ -2,9 +2,10 @@ import uvicorn
 import shutil
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from backend.pdf_processor import process_pdf
+from pdf_processor import process_pdf, get_answer_from_pdf
+from schemas import AnswerResponse, QuestionRequest
 from consts import API_TITLE, ERROR_INVALID_FILE, ERROR_FILE_SAVE, ERROR_FILE_NOT_FOUND, ERROR_PERMISSION, \
-    ERROR_PROCESSING_PDF
+    ERROR_PROCESSING_PDF, ERROR_ANSWERING_QUESTION
 from settings import get_host_env, get_port_env
 from logger import get_logger
 from utils import calculate_file_hash
@@ -82,6 +83,26 @@ async def upload_pdf(file: UploadFile = File(...)):
     except Exception as e:
         logger.error(f"Error processing PDF: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=ERROR_PROCESSING_PDF)
+
+
+@api_router.post("/ask-question", response_model=AnswerResponse)
+async def ask_question(request: QuestionRequest):
+    file_hash = request.file_hash
+    vector_store_path = VECTOR_STORE_DIRECTORY / file_hash
+
+    if not vector_store_path.exists():
+        logger.error(f"Vector store not found for hash: {file_hash}")
+        raise HTTPException(status_code=404, detail=ERROR_FILE_NOT_FOUND)
+
+    try:
+        answer = get_answer_from_pdf(request.question, str(VECTOR_STORE_DIRECTORY), file_hash)
+        return AnswerResponse(answer=answer, file_hash=file_hash)
+    except FileNotFoundError as e:
+        logger.error(f"File not found: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=404, detail=ERROR_FILE_NOT_FOUND)
+    except Exception as e:
+        logger.error(f"Error answering question: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=ERROR_ANSWERING_QUESTION)
 
 
 if __name__ == "__main__":
