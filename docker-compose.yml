@@ -25,7 +25,7 @@ services:
     networks:
       - app-network
     env_file:
-      - ./frontend/.env
+      - ./frontend/.env.production
 
 networks:
   app-network:
