@@ -35,8 +35,6 @@ app.add_middleware(
 )
 
 logger.info("Initializing API router with /api prefix")
-api_router = FastAPI(title=f"{API_TITLE} API")
-app.mount("/api", api_router)
 logger.info("API router mounted at /api")
 
 
@@ -45,12 +43,7 @@ async def root():
     return {"message": API_TITLE}
 
 
-@api_router.get("/")
-async def api_root():
-    return {"message": f"{API_TITLE} API"}
-
-
-@api_router.post("/upload-pdf")
+@app.post("/api/upload-pdf")
 async def upload_pdf(file: UploadFile = File(...)):
     logger.info(f"Received upload request for file: {file.filename}")
 
@@ -85,7 +78,7 @@ async def upload_pdf(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=ERROR_PROCESSING_PDF)
 
 
-@api_router.post("/ask-question", response_model=AnswerResponse)
+@app.post("/api/ask-question", response_model=AnswerResponse)
 async def ask_question(request: QuestionRequest):
     file_hash = request.file_hash
     vector_store_path = VECTOR_STORE_DIRECTORY / file_hash

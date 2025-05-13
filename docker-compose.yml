@@ -6,7 +6,7 @@ services:
     container_name: pdf-qa-backend
     restart: always
     ports:
-      - "8080:80"
+      - "8000:8000"
     volumes:
       - ./data/uploads:/app/uploads
       - ./data/vector_store:/app/vector_store
