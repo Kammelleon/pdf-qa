@@ -1,5 +1,7 @@
 # PDF Question Answering Application
 
+AWS EC2 Application URL: http://63.178.19.5/ 
+
 This is a web application that analyzes text from a PDF file and answers questions about that text using OpenAI's language model (specifically gpt-3.5-turbo). The application consists of a React frontend with a chat-like interface, field for PDF document upload and a Python FastAPI backend with PDF processing capabilities.
 
 ## Features
