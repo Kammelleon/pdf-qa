@@ -13,16 +13,9 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/api': {
           target: `http://${apiHost}:${apiPort}`,
-          changeOrigin: true,
-          secure: false,
-          rewrite: (path) => path
+          changeOrigin: true
         },
       },
     },
-    build: {
-      outDir: 'dist',
-      assetsDir: 'assets',
-      emptyOutDir: true,
-    }
   };
 });

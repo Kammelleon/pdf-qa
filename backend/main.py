@@ -17,26 +17,20 @@ VECTOR_STORE_DIRECTORY = Path(VECTOR_STORE_DIRECTORY_NAME)
 UPLOADED_FILES_DIRECTORY.mkdir(exist_ok=True)
 VECTOR_STORE_DIRECTORY.mkdir(exist_ok=True)
 
-# Zaktualizowana konfiguracja CORS - dodaj konkretne domeny
 CORS_ALLOW_ORIGINS = [
     "http://localhost",
     "http://localhost:80",
     "http://localhost:3000",
-    "http://localhost:5173",  # Domyślny port deweloperski Vite
+    "http://localhost:5173",
     "http://127.0.0.1:5173",
-    # Dodaj adres IP swojej instancji EC2
-    "http://ec2-3.76.106.161.compute-1.amazonaws.com",  # Zamień na twój adres EC2
-    # Dodaj publiczny adres IP
-    "http://3.76.106.161"  # Zamień na publiczny IP twojej instancji
+    "http://ec2-3.76.106.161.compute-1.amazonaws.com",
+    "http://3.76.106.161"
 ]
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-CORS_ALLOW_HEADERS = ["Content-Type", "Authorization", "Accept"]
-
+CORS_ALLOW_METHODS = ["*"]
+CORS_ALLOW_HEADERS = ["*"]
 logger = get_logger(__name__)
-
 app = FastAPI(title=API_TITLE)
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ALLOW_ORIGINS,
@@ -44,9 +38,6 @@ app.add_middleware(
     allow_methods=CORS_ALLOW_METHODS,
     allow_headers=CORS_ALLOW_HEADERS,
 )
-
-logger.info("Initializing API router with /api prefix")
-logger.info("API router mounted at /api")
 
 
 @app.get("/")
