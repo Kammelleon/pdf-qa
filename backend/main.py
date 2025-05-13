@@ -106,4 +106,4 @@ async def ask_question(request: QuestionRequest):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host=get_host_env(), port=get_port_env(), reload=True)
+    uvicorn.run("main:app", host=get_host_env(), port=get_port_env())
