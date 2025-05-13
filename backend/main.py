@@ -17,15 +17,7 @@ VECTOR_STORE_DIRECTORY = Path(VECTOR_STORE_DIRECTORY_NAME)
 UPLOADED_FILES_DIRECTORY.mkdir(exist_ok=True)
 VECTOR_STORE_DIRECTORY.mkdir(exist_ok=True)
 
-CORS_ALLOW_ORIGINS = [
-    "http://localhost",
-    "http://localhost:80",
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://ec2-3.76.106.161.compute-1.amazonaws.com",
-    "http://3.76.106.161"
-]
+CORS_ALLOW_ORIGINS = ["*"]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ["*"]
 CORS_ALLOW_HEADERS = ["*"]
