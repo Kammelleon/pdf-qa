@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  backend:
+    build: ./backend
+    container_name: pdf-qa-backend
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data/uploads:/app/uploads
+      - ./data/vector_store:/app/vector_store
+
+  frontend:
+    build: ./frontend
+    container_name: pdf-qa-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
