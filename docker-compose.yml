@@ -10,6 +10,10 @@ services:
     volumes:
       - ./data/uploads:/app/uploads
       - ./data/vector_store:/app/vector_store
+    networks:
+      - app-network
+    env_file:
+      - ./backend/.env
 
   frontend:
     build: ./frontend
@@ -19,3 +23,9 @@ services:
       - "80:80"
     depends_on:
       - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
