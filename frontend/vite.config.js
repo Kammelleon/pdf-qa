@@ -5,7 +5,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   const apiHost = env.VITE_API_HOST || 'localhost';
-  const apiPort = env.VITE_API_PORT || '8080';
+  const apiPort = env.VITE_API_PORT || '8000';
 
   return {
     plugins: [react()],
@@ -13,9 +13,16 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/api': {
           target: `http://${apiHost}:${apiPort}`,
-          changeOrigin: true
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path) => path
         },
       },
     },
+    build: {
+      outDir: 'dist',
+      assetsDir: 'assets',
+      emptyOutDir: true,
+    }
   };
 });

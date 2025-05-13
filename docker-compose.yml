@@ -1,5 +1,4 @@
 version: '3'
-
 services:
   backend:
     build: ./backend
@@ -25,6 +24,9 @@ services:
       - backend
     networks:
       - app-network
+    environment:
+      - VITE_API_HOST=backend
+      - VITE_API_PORT=8000
 
 networks:
   app-network:

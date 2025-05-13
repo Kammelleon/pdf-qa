@@ -17,10 +17,21 @@ VECTOR_STORE_DIRECTORY = Path(VECTOR_STORE_DIRECTORY_NAME)
 UPLOADED_FILES_DIRECTORY.mkdir(exist_ok=True)
 VECTOR_STORE_DIRECTORY.mkdir(exist_ok=True)
 
-CORS_ALLOW_ORIGINS = ["*"]
+# Zaktualizowana konfiguracja CORS - dodaj konkretne domeny
+CORS_ALLOW_ORIGINS = [
+    "http://localhost",
+    "http://localhost:80",
+    "http://localhost:3000",
+    "http://localhost:5173",  # Domyślny port deweloperski Vite
+    "http://127.0.0.1:5173",
+    # Dodaj adres IP swojej instancji EC2
+    "http://ec2-3.76.106.161.compute-1.amazonaws.com",  # Zamień na twój adres EC2
+    # Dodaj publiczny adres IP
+    "http://3.76.106.161"  # Zamień na publiczny IP twojej instancji
+]
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_METHODS = ["*"]
-CORS_ALLOW_HEADERS = ["*"]
+CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+CORS_ALLOW_HEADERS = ["Content-Type", "Authorization", "Accept"]
 
 logger = get_logger(__name__)
 
