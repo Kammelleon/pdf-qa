@@ -177,12 +177,12 @@ Before setting up the application, ensure you have the following installed:
    npm install
    ```
 
-3. Create a `.env.development` file based on `.env.development.example` for development environment:
+3. Create a `.env.development` file based on `.env.development.example` for development (local) environment:
    ```
    VITE_API_HOST=localhost
    VITE_API_PORT=8000
    ```
-   or create a `.env.production` file based on `.env.production.example` for production environment:
+   or create a `.env.production` file based on `.env.production.example` for production (Docker) environment:
    ```
    VITE_API_HOST=backend
    VITE_API_PORT=8000
@@ -194,8 +194,10 @@ Before setting up the application, ensure you have the following installed:
 ### Option 1: Using Docker Compose (Recommended)
 
 1. Make sure you have Docker and Docker Compose installed on your system.
+2. Make sure you have `.env.production` file correctly set up in the `/frontend` directory
+3. Make sure you have `.env` file correctly set up in the `/backend` directory
 
-2. Build and start the containers:
+4. Build and start the containers:
    ```
    docker-compose up --build -d
    ```
@@ -204,11 +206,11 @@ Before setting up the application, ensure you have the following installed:
    docker compose up --build -d
    ```
 
-3. Access the application on the relevant URLs based on your `.env` files values. Example URLs for development environment might look like this:
+5. Access the application on the relevant URLs based on your `.env` files values. Example URLs for development environment might look like this:
    - Frontend: http://localhost:5173
    - Backend API: http://localhost:8000/api
 
-4. To stop the application:
+6. To stop the application:
    ```
    docker-compose down
    ```
@@ -225,8 +227,8 @@ Before setting up the application, ensure you have the following installed:
    ```
    cd backend
    ```
-
-2. Start the FastAPI server:
+2. Ensure that you have set up your `.env` file
+3. Start the FastAPI server:
    ```
    python main.py
    ```
@@ -239,8 +241,8 @@ Before setting up the application, ensure you have the following installed:
    ```
    cd frontend
    ```
-
-2. Start the Vite development server:
+2. Ensure that you have your `.env.development` file correctly set up
+3. Start the Vite development server:
    ```
    npm run dev
    ```
